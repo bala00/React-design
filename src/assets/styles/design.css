@@ -1,0 +1,91 @@
+#root{
+    width: 100%;
+    height: 100%;
+}
+.App {
+    width: 100%;
+    height: 100%;
+    min-width: 1500px;
+    min-height: 900px;
+    background:url('../images/bg.jpg') center no-repeat;
+    background-size: 100% 100%;
+    color: #fff;
+}
+.app-design-container{
+    margin: auto;
+    width: 1500px;
+}
+.app-title{
+    margin: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 80px;
+    color: #fff;
+    font-size: 22px;
+    text-align: center;
+}
+
+.app-source{
+   display: inline-block;
+   margin-top: 16px;
+   padding: 0 14px;
+   width: 205px;
+   height: 36px;
+   line-height: 36px;
+   cursor: pointer;
+   color: #f7f7f7;
+   font-size: 13px;
+   border: 1px dashed #d9d9d9;
+   background: rgba(255, 255, 255, .15);
+}
+.app-source:nth-child(2n+1){
+    margin-right: 20px;
+}
+.app-target-wrapper{
+    position: relative;
+    margin: auto;
+    width: 410px;
+    height: auto;
+}
+.app-target{
+    position: absolute;
+    width: 353px;
+    height: 580px;
+    top: 80px;
+    left: 29px;
+    color: #000;
+    /* text-align: center; */
+    /* background: rgba(0, 0, 0, .5) */
+}
+.app-iphone{
+    display: block;
+    width: 100%;
+}
+.ant-tabs{
+    width: 86%;
+    color: #f7f7f7
+}
+.ant-tabs-nav{
+    width: 100%;
+}
+.ant-tabs-nav .ant-tabs-tab{
+    margin: 0;
+    width: 50%;
+    font-size: 18px;
+}
+.app-tabs-data{
+    float: right
+}
+.app-source .iconfont{
+    float: right;
+    font-size: 16px;
+}
+.app-source:nth-child(1) .iconfont{
+    font-weight: 600
+}
+.app-source:nth-child(3) .iconfont{
+    font-size: 14px;
+}
+.app-source:nth-child(6) .iconfont, .app-source:nth-child(8) .iconfont{
+    font-size: 18px;
+}
