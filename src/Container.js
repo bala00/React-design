@@ -71,7 +71,7 @@ class Container extends Component {
                     <Col span={8}>
                         <div className="app-target-wrapper">
                             <img className="app-iphone" src={iphone} alt="iphone-bg" />
-                            <Target />
+                            <Target index={1} />
                         </div>
                     </Col>
                     <Col span={8}>

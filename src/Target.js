@@ -16,13 +16,14 @@ const cardTarget = {
     //     return { name: 'Target' }
     // }
     hover(props, monitor, component){
-    
+        console.log('id-->',props.index);
+
         const item = monitor.getItem();
 		const dragIndex = item.index;
         const hoverIndex = props.index;
 
-        console.log('dragIndex-->',dragIndex);
-        console.log('hoverIndex-->',hoverIndex);
+        // console.log('dragIndex-->',dragIndex);
+        // console.log('hoverIndex-->',hoverIndex);
 
         // 获取当前组件在窗口中的左，上，右和下分别相对浏览器视窗的位置
         const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
@@ -32,7 +33,10 @@ const cardTarget = {
         const clientOffset = monitor.getClientOffset();
         const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-    }
+        console.log('hoverY-->',hoverBoundingRect);
+        console.log('hoverMY-->',hoverMiddleY);
+    },
+
 };
 
 let collect = (connect, monitor) => {
@@ -63,10 +67,14 @@ class Target extends Component {
         return connectDropTarget(
             // style={style}
             <div className="app-target">
-                {isActive ?
+                {console.log('this-->',this)}
+                {/* {isOver && !canDrop ? this.renderOverlay('red')}
+                {!isOver && canDrop && this.renderOverlay('yellow')}
+                {isOver && canDrop && this.renderOverlay('green')} */}
+                {/* {isActive ?
                     'Hummmm, source!' : 
                     'Drag here to order!'
-                }
+                } */}
             </div>
         )
     }
