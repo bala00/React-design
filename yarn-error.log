@@ -30,7 +30,8 @@ npm manifest:
       "react-scripts": "1.1.4",
       "react-transition-group": "^1.2.1",
       "redux": "^4.0.0",
-      "redux-thunk": "^2.3.0"
+      "redux-thunk": "^2.3.0",
+      "reflux": "^6.4.1"
     },
     "scripts": {
       "start": "react-scripts start",
@@ -7206,7 +7207,7 @@ Lockfile:
 
 Trace: 
   Error: Command failed.
-  Exit code: 127
+  Exit code: 1
   Command: sh
   Arguments: -c react-scripts start
   Directory: /Users/umi/git/project/epb/testDemo/react-design

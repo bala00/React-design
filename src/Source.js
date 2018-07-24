@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { DragSource } from 'react-dnd';
+import { DragSource, DropTarget } from 'react-dnd';
+// import { findDOMNode } from 'react-dom'
+// import ReactCSSTransitionGroup from 'react-transition-group';
 import PropTypes from 'prop-types';
 import ItemTypes from './ItemTypes'
 import './assets/font/iconfont.css'
@@ -12,21 +14,16 @@ import './assets/font/iconfont.css'
 */
 
 const cardSource = {
-  beginDrag(props){
+  beginDrag(props) {
     return {
       name: props.name,
+      type: props.type,
       id: props.id,
-      index: props.index
+      index: props.index,
+      field: props.field,
+      element: props.element
     }
   },
-  // endDrag(props, monitor){
-  //   const dragItem = monitor.getItem();
-  //   const dropResult = monitor.getDropResult();
-
-  //   if(dropResult){
-  //     console.log(`You dropped ${dragItem.name} into ${dropResult.name}`);
-  //   }
-  // }
 }
 
 let collect = (connect, monitor) => {
@@ -37,17 +34,8 @@ let collect = (connect, monitor) => {
 }
 
 class Source extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      // showLine: false
-    }
-  }
-  // toggleLine(){
-  //   this.setState({showLine: !this.state.showLine})
-  // }
 
-  render () {
+  render() {
     const { name, icon, isDragging, connectDragSource } = this.props;
     const opacity = isDragging ? 0.4 : 1;
     const style = {
