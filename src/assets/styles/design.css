@@ -105,12 +105,11 @@
 }
 .app-element-wrap{
     position: relative;
-    margin:15px 0;
-    overflow: hidden;
+    padding:15px 0 0 0;
 }
 .app-drag{
     position: absolute;
-    top: 0;
+    top: 15px;
     right: 0;
     bottom: 0;
     left: 0;
@@ -121,7 +120,7 @@
 .app-remove{
     position: absolute;
     right: 0;
-    top: 0;
+    top: 15px;
     font-size: 12px;
     color: #eee;
     display: none;
@@ -207,22 +206,31 @@
 
 .app-element-wrap.dragging{
     pointer-events:none;
-    -webkit-filter: blur(1px);
-    filter: blur(1px);
+   
 }
 .app-element-wrap.dragging .app-drag{
     border-width: 1px;
     border-color: #666;
     border-style: dashed;
     background: #ccc;
-    opacity: .8
+    opacity: .8;
+    -webkit-filter: blur(1px);
+    filter: blur(1px);
+}
+
+.app-element-wrap.dragging .app-componentview{
+    -webkit-filter: blur(1px);
+    filter: blur(1px);
 }
 
 .app-dragging-mark {
     display: none;
-    position: relative;
+    position: absolute;
     margin: 3px 0;
+    width: 100%;
     height: 2px;
+    left: 0;
+    top: 0;
     overflow: visible;
     background: #ff4500;
 }
@@ -247,4 +255,16 @@
 .app-dragging-mark:after {
     right: 0;
     border-right-color: #ff4500
+}
+.app-element-wrap.mark{
+    padding-bottom: 15px;
+}
+.app-element-wrap.mark .app-drag{
+    bottom: 15px;
+}
+.app-element-wrap.mark .app-dragging-mark{
+    display: block;
+    top: auto;
+    bottom: -4px;
+    z-index: 1;
 }

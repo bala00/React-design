@@ -12,12 +12,10 @@ import TargetSource from './TargetSource'
 */
 function mouseEvent(event) {
     let box = document.getElementById("elementBox").clientHeight  //获取当前拖拽目标框内容元素高度
-
-
     let targetBodyY = 155 + box;  //获取拖拽目标框内容元素底部距离视窗的垂直距离
     let e = event || window.event;
     let mouseY = e.clientY   //鼠标距离视窗的垂直距离
-    // if(mouseY >)
+
     return { targetBodyY: targetBodyY, mouseY: mouseY }
 }
 
@@ -28,25 +26,30 @@ const cardTarget = {
 
         let _length = props.targetList.length;
 
-        if(_length === 0){
-            
-            
-        }else{
-            if (clientY.mouseY >= clientY.targetBodyY){
-                
+        if (_length === 0) {
+            props.getMarkFlag(_length, 1);
+        } else {
+            if (clientY.mouseY >= clientY.targetBodyY) {
+                props.getMarkFlag(_length, 1);
             }
         }
     },
     drop(props, monitor) {
         const item = monitor.getItem()
-        const dragIndex = item.index;
 
         let clientY = mouseEvent();
         let _length = props.targetList.length;
 
-        // if(_length === 0){
-            props.insert(0,item)
-        // }
+        props.getMarkFlag(_length, 0);
+
+        if (_length === 0) {
+            props.insert(0, item)
+        } else {
+            if (clientY.mouseY >= clientY.targetBodyY) {
+                props.insert(_length, item)
+
+            }
+        }
     }
 };
 
@@ -78,7 +81,7 @@ class Target extends Component {
     }
 
     render() {
-        const { canDrop, isOver, connectDropTarget } = this.props;
+        const { canDrop, isOver, getMarkFlag, markFlag,insert, deleteCard, moveCard, targetList, connectDropTarget } = this.props;
         // const isActive = canDrop && isOver;
         let list = this.props.targetList;
         let elementBodyClass = '';
@@ -86,8 +89,16 @@ class Target extends Component {
             elementBodyClass = 'empty'
         }
 
+        let markStyle = { display: 'block' }
+        if (!isOver || !canDrop) {
+
+            markStyle = {
+                display: 'none'
+            }
+        }
+
         let baseClass = 'app-element-wrap';
-        let items = this.props.targetList.map((item, index) => {
+        let items = targetList.map((item, index) => {
             return <TargetSource baseClass={baseClass}
                 element={item.element}
                 name={item.name}
@@ -95,14 +106,16 @@ class Target extends Component {
                 id={item.id}
                 key={item.id}
                 field={item.field}
+                getMarkFlag={getMarkFlag}
+                markFlag={markFlag}
                 type={item.type}
-                onClick={this.handleClick} clickClass={this.state.clickClass} deleteCard={this.props.deleteCard} moveCard={this.props.moveCard} />
-        }) 
+                onClick={this.handleClick} insert={insert}  clickClass={this.state.clickClass} deleteCard={deleteCard} moveCard={moveCard} />
+        })
 
         return connectDropTarget(
             <div className="app-target">
                 <div className={`app-element-body ${elementBodyClass}`} id="elementBox">
-                    <div className="app-dragging-mark"></div>
+                    <div className="app-dragging-mark" style={markFlag.index === 0 ? markStyle : null}></div>
                     {elementBodyClass ? <Empty /> : items}
                 </div>
             </div>

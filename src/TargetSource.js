@@ -27,55 +27,22 @@ const cardSource = {
 
 const cardDropSpec = {
   hover(props, monitor, component) {
+    const hoverIndex = props.index
+    props.getMarkFlag(hoverIndex, 1);
+    
+  },
+  drop(props, monitor) {
     const item = monitor.getItem()
     const dragIndex = item.index
     const hoverIndex = props.index
-    // props.onHover(hoverIndex)
 
-    console.log('test-->',hoverIndex);
+    props.insert(hoverIndex, item)
 
-    if (dragIndex === hoverIndex) {
-      return
-    } if (dragIndex === -1) {
-      item.index = hoverIndex
-      console.log('dragIndex==>', dragIndex);
-      console.log('后面还没写！！');
+    console.log('hoverIndex--->',hoverIndex);
+    console.log('dragIndex--->',dragIndex);
 
-      // props.insertCard(item.onCreate(item.data), hoverIndex)
-    }
 
-    // Determine rectangle on screen
-    const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
-
-    //findDOMNode(component)  获取组件中真实的DOM
-    //object.getBoundingClientRect()：获取某个元素相对于视窗的位置集合。集合中有top, right, bottom, left等属性。
-    // Get vertical middle
-    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-    // Determine mouse position
-    const clientOffset = monitor.getClientOffset(); //拖拽组件当前offset
-
-    // Get pixels to the top
-    const hoverClientY = clientOffset.y - hoverBoundingRect.top
-
-    // console.log('clientOffset.y-->',clientOffset.y);
-    // console.log('hoverBoundingRect.top-->',hoverBoundingRect.top);
-
-    // console.log('hoverIndex---->', hoverIndex);
-    // console.log('dragIndex---->', dragIndex);
-
-    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-      return
-    }
-
-    // Dragging upwards
-    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-      return
-    }
-
-    // props.moveCard(dragIndex, hoverIndex)
-
-    // item.index = hoverIndex
+    
   }
 }
 
@@ -83,13 +50,16 @@ const cardDropSpec = {
 let collect = (connect, monitor) => {
   return {
     connectDragSource: connect.dragSource(),
+    
     isDragging: monitor.isDragging()
   }
 }
 
 let collectDrop = (connect, monitor) => {
   return {
-    connectDropTarget: connect.dropTarget()
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),   //isOver:可以使用任何名称
+        canDrop: monitor.canDrop(),
   }
 }
 
@@ -123,12 +93,14 @@ function CommonTm(props) {
 }
 
 class TargetSource extends Component {
+
   render() {
-    const { baseClass, onClick, deleteCard, clickClass, element, type, name, index, isDragging, connectDragSource, connectDropTarget } = this.props;
+    const { baseClass, onClick, deleteCard, clickClass, element, type, name, markFlag, index, isDragging, connectDragSource, connectDropTarget } = this.props;
     const dragClass = isDragging ? 'dragging' : '';
+
     return connectDropTarget(
       connectDragSource(
-        <div className={`${baseClass} app-element-${element} ${dragClass}${clickClass === index ? 'active' : ''}`} index={index} onClick={onClick}>
+        <div className={`${baseClass} app-element-${element} ${dragClass} ${clickClass === index ? 'active' : ''} ${index === markFlag.index-1&& markFlag.show === 1 ? 'mark': ''}` } index={index} onClick={onClick}>
           <div className="app-remove" index={index} onClick={deleteCard}><Icon type="close" /></div>
           <div className='app-drag'></div>
           <div className="app-componentview">

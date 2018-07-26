@@ -78,6 +78,10 @@ class Container extends Component {
     constructor() {
         super(...arguments);
         this.state = {
+            markFlag: {
+                index: null,
+                show: 0   // 0：不显示，1：显示
+            },
             sourceList: kjList,   //可拖拽数组
             targetList: []   ////接收拖拽目标数组
         }
@@ -109,14 +113,15 @@ class Container extends Component {
         this.setState({ targetList: newData })
     }
 
-    // getHoverIndex = (index) => {
-    //     let box = document.getElementById("elementBox")
-    //     let s = window.getComputedStyle(box).height
-
-    //     this.setState({
-    //         hoverIndex: index
-    //     })
-    // }
+    getMarkFlag = (index, show) => {
+        
+        this.setState({
+            markFlag: {
+                index: index,
+                show: show
+            }
+        })
+    }
 
     render() {
         return (
@@ -140,7 +145,8 @@ class Container extends Component {
                             <img className="app-iphone" src={iphone} alt="iphone-bg" />
                             <Target targetList={this.state.targetList}
                             insert={this.insert} 
-                            markIndex={this.state.markIndex}
+                            markFlag={this.state.markFlag}
+                            getMarkFlag={this.getMarkFlag}
                             moveCard={this.moveCard} 
                             deleteCard={this.deleteCard} />
                         </div>
