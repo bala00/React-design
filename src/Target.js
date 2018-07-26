@@ -3,7 +3,6 @@ import { findDOMNode } from 'react-dom'
 import { DropTarget } from 'react-dnd';
 import PropTypes from 'prop-types';
 import ItemTypes from './ItemTypes';
-import Source from './Source'
 import TargetSource from './TargetSource'
 
 /*
@@ -11,21 +10,43 @@ import TargetSource from './TargetSource'
 * author: hmw
 * time: 18.07.12
 */
+function mouseEvent(event) {
+    let box = document.getElementById("elementBox").clientHeight  //获取当前拖拽目标框内容元素高度
+
+
+    let targetBodyY = 155 + box;  //获取拖拽目标框内容元素底部距离视窗的垂直距离
+    let e = event || window.event;
+    let mouseY = e.clientY   //鼠标距离视窗的垂直距离
+    // if(mouseY >)
+    return { targetBodyY: targetBodyY, mouseY: mouseY }
+}
 
 const cardTarget = {
-    hover(props, monitor){
-        console.log('props-->',props.index); 
-        //props：打印出来是targetList，props.index为undefined
-        //需求：在这个地方需要获取鼠标所在位置：即拖拽组件要从【下标：需要获取的值】位置处插入目标数组中。 如： targetList.splice(index, 0, xxx)，这个index就是我需要的值，也是我现在遇到的问题，这个值我一直获取不到。
-        
+    hover(props, monitor, component) {
+
+        let clientY = mouseEvent();
+
+        let _length = props.targetList.length;
+
+        if(_length === 0){
+            
+            
+        }else{
+            if (clientY.mouseY >= clientY.targetBodyY){
+                
+            }
+        }
     },
     drop(props, monitor) {
         const item = monitor.getItem()
         const dragIndex = item.index;
-        const hoverIndex = props.index;  //打印出来是undefined
-        // console.log('props.index',hoverIndex);
 
-        props.insert(item)
+        let clientY = mouseEvent();
+        let _length = props.targetList.length;
+
+        // if(_length === 0){
+            props.insert(0,item)
+        // }
     }
 };
 
@@ -45,16 +66,16 @@ function Empty() {
 }
 
 class Target extends Component {
-    constructor () {
-    super();
-    this.state = {
-      clickClass : 0
+    constructor() {
+        super();
+        this.state = {
+            clickClass: 0
+        }
     }
-  }
-  
-  handleClick = (event)=>{
-    this.setState({clickClass: parseInt(event.target.getAttribute('index'), 10)})
-  }
+
+    handleClick = (event) => {
+        this.setState({ clickClass: parseInt(event.target.getAttribute('index'), 10) })
+    }
 
     render() {
         const { canDrop, isOver, connectDropTarget } = this.props;
@@ -65,18 +86,23 @@ class Target extends Component {
             elementBodyClass = 'empty'
         }
 
-        // let items = this.props.targetList.map((item, index) => {
-        //     return this.getElement(item, index)
-        // })
         let baseClass = 'app-element-wrap';
-
         let items = this.props.targetList.map((item, index) => {
-            return <TargetSource baseClass={baseClass} element={item.element} name={item.name} index={index} id={item.id} field={item.field} type={item.type} onClick={this.handleClick} clickClass={this.state.clickClass} deleteCard={this.props.deleteCard} moveCard={this.props.moveCard} />
-        })
+            return <TargetSource baseClass={baseClass}
+                element={item.element}
+                name={item.name}
+                index={index}
+                id={item.id}
+                key={item.id}
+                field={item.field}
+                type={item.type}
+                onClick={this.handleClick} clickClass={this.state.clickClass} deleteCard={this.props.deleteCard} moveCard={this.props.moveCard} />
+        }) 
 
         return connectDropTarget(
             <div className="app-target">
-                <div className={`app-element-body ${elementBodyClass}`}>
+                <div className={`app-element-body ${elementBodyClass}`} id="elementBox">
+                    <div className="app-dragging-mark"></div>
                     {elementBodyClass ? <Empty /> : items}
                 </div>
             </div>

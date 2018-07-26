@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Tabs } from 'antd';
+import uuid from 'uuid';
 import Source from './Source'
 import Target from './Target'
 import { DragDropContext } from 'react-dnd'
@@ -74,7 +75,7 @@ const kjList = [{   //罗列可拖拽组件库
 }];
 
 class Container extends Component {
-    constructor () {
+    constructor() {
         super(...arguments);
         this.state = {
             sourceList: kjList,   //可拖拽数组
@@ -82,8 +83,9 @@ class Container extends Component {
         }
     }
 
-    insert = (item) => {
-        this.saveData(0, 0, item);
+    insert = (index,item) => {
+        item.id = uuid.v4();
+        this.saveData(index, 0, item);
     }
 
     moveCard = (dragIndex, hoverIndex) => {//排序过程中，先执行moveCard,再执行insert
@@ -96,17 +98,25 @@ class Container extends Component {
     }
 
     saveData = (index, num, data) => {
-        let { targetList } = this.state; 
+        let { targetList } = this.state;
         let newData = targetList;
-        if(num === 0){
+        if (num === 0) {
             newData.splice(index, num, data)
 
-        }else{
+        } else {
             newData.splice(index, num)
-
         }
-        this.setState({targetList: newData})
+        this.setState({ targetList: newData })
     }
+
+    // getHoverIndex = (index) => {
+    //     let box = document.getElementById("elementBox")
+    //     let s = window.getComputedStyle(box).height
+
+    //     this.setState({
+    //         hoverIndex: index
+    //     })
+    // }
 
     render() {
         return (
@@ -118,7 +128,7 @@ class Container extends Component {
                             <TabPane tab="控件库" key="1">
                                 {
                                     this.state.sourceList.map((item, index) => {
-                                        return <Source name={item.name} key={item.id} id={item.id} index={index} type={item.type} field={item.field} element={item.element} icon={item.icon}/>
+                                        return <Source name={item.name} key={item.id} id={item.id} index={index} type={item.type} field={item.field} element={item.element} icon={item.icon} />
                                     })
                                 }
                             </TabPane>
@@ -128,7 +138,11 @@ class Container extends Component {
                     <Col span={8}>
                         <div className="app-target-wrapper">
                             <img className="app-iphone" src={iphone} alt="iphone-bg" />
-                            <Target targetList={this.state.targetList} insert={this.insert} moveCard={this.moveCard} deleteCard={this.deleteCard} />
+                            <Target targetList={this.state.targetList}
+                            insert={this.insert} 
+                            markIndex={this.state.markIndex}
+                            moveCard={this.moveCard} 
+                            deleteCard={this.deleteCard} />
                         </div>
                     </Col>
                     <Col span={8}>

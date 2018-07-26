@@ -28,52 +28,54 @@ const cardSource = {
 const cardDropSpec = {
   hover(props, monitor, component) {
     const item = monitor.getItem()
-		const dragIndex = item.index
+    const dragIndex = item.index
     const hoverIndex = props.index
+    // props.onHover(hoverIndex)
+
+    console.log('test-->',hoverIndex);
 
     if (dragIndex === hoverIndex) {
-			return
-		} if (dragIndex === -1) {
+      return
+    } if (dragIndex === -1) {
       item.index = hoverIndex
-      console.log('dragIndex==>',dragIndex);
+      console.log('dragIndex==>', dragIndex);
       console.log('后面还没写！！');
-      
-			// props.insertCard(item.onCreate(item.data), hoverIndex)
-		}
+
+      // props.insertCard(item.onCreate(item.data), hoverIndex)
+    }
 
     // Determine rectangle on screen
     const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
 
     //findDOMNode(component)  获取组件中真实的DOM
     //object.getBoundingClientRect()：获取某个元素相对于视窗的位置集合。集合中有top, right, bottom, left等属性。
-
     // Get vertical middle
     const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-    
+
     // Determine mouse position
-		const clientOffset = monitor.getClientOffset(); //拖拽组件当前offset
+    const clientOffset = monitor.getClientOffset(); //拖拽组件当前offset
 
     // Get pixels to the top
     const hoverClientY = clientOffset.y - hoverBoundingRect.top
 
     // console.log('clientOffset.y-->',clientOffset.y);
     // console.log('hoverBoundingRect.top-->',hoverBoundingRect.top);
-    
+
     // console.log('hoverIndex---->', hoverIndex);
     // console.log('dragIndex---->', dragIndex);
-  
-		if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-			return
-		}
 
-		// Dragging upwards
-		if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-			return
+    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      return
     }
-    
-    props.moveCard(dragIndex, hoverIndex)
-    
-		item.index = hoverIndex
+
+    // Dragging upwards
+    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      return
+    }
+
+    // props.moveCard(dragIndex, hoverIndex)
+
+    // item.index = hoverIndex
   }
 }
 
@@ -126,7 +128,7 @@ class TargetSource extends Component {
     const dragClass = isDragging ? 'dragging' : '';
     return connectDropTarget(
       connectDragSource(
-        <div className={`${baseClass} app-element-${element} ${dragClass}${clickClass === index? 'active': ''}`} index={index} onClick={onClick}>
+        <div className={`${baseClass} app-element-${element} ${dragClass}${clickClass === index ? 'active' : ''}`} index={index} onClick={onClick}>
           <div className="app-remove" index={index} onClick={deleteCard}><Icon type="close" /></div>
           <div className='app-drag'></div>
           <div className="app-componentview">
@@ -136,6 +138,7 @@ class TargetSource extends Component {
               }
             </div>
           </div>
+            <div className="app-dragging-mark"></div>
         </div>
       )
     )

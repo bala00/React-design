@@ -18,7 +18,6 @@ const cardSource = {
     return {
       name: props.name,
       type: props.type,
-      id: props.id,
       index: props.index,
       field: props.field,
       element: props.element
@@ -58,7 +57,6 @@ Source.propTypes = {
   isDragging: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
-  id: PropTypes.any.isRequired
 }
 
 export default DragSource(ItemTypes.CARD, cardSource, collect)(Source);
