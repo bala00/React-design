@@ -23,27 +23,93 @@ const cardSource = {
       element: props.element
     }
   },
+  // endDrag(props, monitor, component){
+    // let dropResult = monitor.getDropResult();
+    // let hoverIndex = dropResult.hoverIndex;
+    // let dragIndex = dropResult.dragIndex;
+
+    // console.log('drag 000--->',dragIndex);
+    // console.log('hover 000-->',hoverIndex);
+
+    // if(dragIndex && hoverIndex){
+
+    //   // console.log('moveCard start-------');
+
+    //   props.moveCard(dragIndex, hoverIndex)
+    // }
+  // },
 }
 
 const cardDropSpec = {
   hover(props, monitor, component) {
-    const hoverIndex = props.index
-    props.getMarkFlag(hoverIndex, 1);
-    
-  },
-  drop(props, monitor) {
+    // let item = monitor.getItem()
+    // let dragIndex = item.index
+    let hoverIndex = props.index
     const item = monitor.getItem()
-    const dragIndex = item.index
-    const hoverIndex = props.index
-
-    props.insert(hoverIndex, item)
-
-    console.log('hoverIndex--->',hoverIndex);
-    console.log('dragIndex--->',dragIndex);
-
-
+		const dragIndex = item.index
     
-  }
+
+    if (dragIndex === hoverIndex) {
+			return
+		}
+    
+    //  // Determine rectangle on screen
+		// const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
+
+		// // Get vertical middle
+		// const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+
+		// // Determine mouse position
+		// const clientOffset = monitor.getClientOffset()
+
+		// // Get pixels to the top
+    // const hoverClientY = clientOffset.y - hoverBoundingRect.top
+    
+    // console.log('hoverClientY--->',hoverClientY);
+    // console.log('hoverMiddleY-->',hoverMiddleY);
+    
+    props.getHoverIndex(hoverIndex)
+    
+    item.index = hoverIndex
+
+
+		// Dragging downwards
+		// if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+		// 	return
+		// }
+
+		// // Dragging upwards
+		// if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+		// 	return
+    // }
+    // props.getMarkFlag(hoverIndex, 1);
+
+  },
+  // drop(props, monitor) {
+  //   let item = monitor.getItem()
+  //   let dragIndex = item.index
+  //   let hoverIndex = props.index
+
+  //   console.log('drag 111--->',dragIndex);
+  //   console.log('hover 111-->',hoverIndex);
+
+  //   if (dragIndex === hoverIndex) {
+	// 		return
+  //   }
+
+  //   // let hover = hoverIndex + 1
+
+  //   // if(dragIndex === hover){
+  //   //   return
+  //   // }
+    
+  //   props.insert(hoverIndex, item)
+
+  //   return {
+  //     dragIndex: dragIndex,
+  //     hoverIndex: hoverIndex
+  //   }
+  // }
 }
 
 
@@ -95,12 +161,12 @@ function CommonTm(props) {
 class TargetSource extends Component {
 
   render() {
-    const { baseClass, onClick, deleteCard, clickClass, element, type, name, markFlag, index, isDragging, connectDragSource, connectDropTarget } = this.props;
+    const { baseClass, onClick, deleteCard, clickClass, element, type, name, index, isDragging, connectDragSource, connectDropTarget } = this.props;
     const dragClass = isDragging ? 'dragging' : '';
 
     return connectDropTarget(
       connectDragSource(
-        <div className={`${baseClass} app-element-${element} ${dragClass} ${clickClass === index ? 'active' : ''} ${index === markFlag.index-1&& markFlag.show === 1 ? 'mark': ''}` } index={index} onClick={onClick}>
+        <div className={`${baseClass} app-element-${element} ${dragClass} ${clickClass === index ? 'active' : ''}` } index={index} onClick={onClick}>
           <div className="app-remove" index={index} onClick={deleteCard}><Icon type="close" /></div>
           <div className='app-drag'></div>
           <div className="app-componentview">
@@ -110,7 +176,6 @@ class TargetSource extends Component {
               }
             </div>
           </div>
-            <div className="app-dragging-mark"></div>
         </div>
       )
     )

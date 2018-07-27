@@ -4,6 +4,7 @@ import { DropTarget } from 'react-dnd';
 import PropTypes from 'prop-types';
 import ItemTypes from './ItemTypes';
 import TargetSource from './TargetSource'
+import uuid from 'uuid';
 
 /*
 * feature: 可接受拖拽的容器组件
@@ -25,9 +26,10 @@ const cardTarget = {
         let clientY = mouseEvent();
 
         let _length = props.targetList.length;
+        
 
         if (_length === 0) {
-            props.getMarkFlag(_length, 1);
+            props.getMarkFlag(0, 1);
         } else {
             if (clientY.mouseY >= clientY.targetBodyY) {
                 props.getMarkFlag(_length, 1);
@@ -81,7 +83,7 @@ class Target extends Component {
     }
 
     render() {
-        const { canDrop, isOver, getMarkFlag, markFlag,insert, deleteCard, moveCard, targetList, connectDropTarget } = this.props;
+        const { canDrop, isOver, insert, getHoverIndex, markFlag, deleteCard, moveCard, targetList, connectDropTarget } = this.props;
         // const isActive = canDrop && isOver;
         let list = this.props.targetList;
         let elementBodyClass = '';
@@ -89,33 +91,45 @@ class Target extends Component {
             elementBodyClass = 'empty'
         }
 
-        let markStyle = { display: 'block' }
+        let markStyle = { 
+            display: 'block',
+            marginTop: '11px',
+            marginBottom: '4px'
+        }
+        let defaultMarkStyle = {
+            display: 'none',
+            marginTop: '3px',
+            marginBottom: '3px'
+        }
         if (!isOver || !canDrop) {
-
-            markStyle = {
-                display: 'none'
-            }
+            markStyle = defaultMarkStyle
         }
 
         let baseClass = 'app-element-wrap';
-        let items = targetList.map((item, index) => {
-            return <TargetSource baseClass={baseClass}
+        let items = []
+        
+        targetList.map((item, index) => {
+             items.push(
+                <TargetSource baseClass={baseClass}
                 element={item.element}
                 name={item.name}
                 index={index}
                 id={item.id}
                 key={item.id}
                 field={item.field}
-                getMarkFlag={getMarkFlag}
-                markFlag={markFlag}
                 type={item.type}
-                onClick={this.handleClick} insert={insert}  clickClass={this.state.clickClass} deleteCard={deleteCard} moveCard={moveCard} />
+                getHoverIndex={getHoverIndex}
+                onClick={this.handleClick} insert={insert} clickClass={this.state.clickClass} deleteCard={deleteCard} moveCard={moveCard} />
+             )
+             items.push(
+                <div key={uuid.v4()} className="app-dragging-mark" style={(markFlag.index===index+1&&markFlag.show===1)?markStyle:defaultMarkStyle}></div>
+             )
         })
-
+        
         return connectDropTarget(
             <div className="app-target">
                 <div className={`app-element-body ${elementBodyClass}`} id="elementBox">
-                    <div className="app-dragging-mark" style={markFlag.index === 0 ? markStyle : null}></div>
+                    <div className="app-dragging-mark" style={(markFlag.index===0&&markFlag.show===1)?markStyle:defaultMarkStyle}></div>
                     {elementBodyClass ? <Empty /> : items}
                 </div>
             </div>

@@ -82,38 +82,70 @@ class Container extends Component {
                 index: null,
                 show: 0   // 0：不显示，1：显示
             },
+            hoverIndex: null,
             sourceList: kjList,   //可拖拽数组
             targetList: []   ////接收拖拽目标数组
         }
     }
 
+    getHoverIndex = (index) => {
+        // console.log('index--->',index);
+    }
+
     insert = (index,item) => {
         item.id = uuid.v4();
-        this.saveData(index, 0, item);
+        let { targetList } = this.state;
+        let newData = targetList;
+        console.log('增加----');
+        newData.splice(index, 0, item)
+        this.setState({ targetList: newData })
+        // this.saveData(index, 0, item);
     }
 
     moveCard = (dragIndex, hoverIndex) => {//排序过程中，先执行moveCard,再执行insert
-        this.saveData(dragIndex, 1);
+        
+        let { targetList } = this.state;
+        let newData = targetList;
+        console.log('删除-----');
+        newData.splice(dragIndex, 1)
+        this.setState({ targetList: newData })
+        // console.log('dg--->',dragIndex);
+        // console.log('targetList--->',this.state.targetList);
+
+        // this.saveData(dragIndex, 1);
     }
 
     deleteCard = (e) => {
-        let index = parseInt(e.target.getAttribute('index'), 10);
-        this.saveData(index, 1)
-    }
-
-    saveData = (index, num, data) => {
         let { targetList } = this.state;
         let newData = targetList;
-        if (num === 0) {
-            newData.splice(index, num, data)
-
-        } else {
-            newData.splice(index, num)
-        }
+        let index = parseInt(e.target.getAttribute('index'), 10);
+        newData.splice(index, 1)
         this.setState({ targetList: newData })
+        // this.saveData(index, 1)
     }
 
+    // saveData = (index, num, data) => {
+    //     let { targetList } = this.state;
+    //     let newData = targetList;
+    //     if (num === 0) {
+    //         console.log('增加----');
+            
+    //         newData.splice(index, num, data)
+
+    //     } else {
+    //         console.log('删除-----');
+            
+    //         newData.splice(index, num)
+    //     }
+    //     this.setState({ targetList: newData })
+    // }
+
     getMarkFlag = (index, show) => {
+
+        // console.log('index--->',index);
+        // console.log('show---->',show);
+        
+        
         
         this.setState({
             markFlag: {
@@ -143,10 +175,10 @@ class Container extends Component {
                     <Col span={8}>
                         <div className="app-target-wrapper">
                             <img className="app-iphone" src={iphone} alt="iphone-bg" />
-                            <Target targetList={this.state.targetList}
-                            insert={this.insert} 
-                            markFlag={this.state.markFlag}
+                            <Target targetList={this.state.targetList} markFlag={this.state.markFlag}
+                            getHoverIndex={this.getHoverIndex}
                             getMarkFlag={this.getMarkFlag}
+                            insert={this.insert} 
                             moveCard={this.moveCard} 
                             deleteCard={this.deleteCard} />
                         </div>
