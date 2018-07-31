@@ -5,6 +5,7 @@ import Source from './Source'
 import Target from './Target'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+import * as FieldModal from './FormSet/FormElement'
 import './assets/styles/design.css'
 import iphone from './assets/images/iphone.png'
 
@@ -36,7 +37,7 @@ const kjList = [{   //罗列可拖拽组件库
     icon: 'icon-kongjian-shuzishurukuang',
     field: 'NumberField',
     element: 'inputNumber',
-    type: 'input'
+    type: 'numInput'
 }, {
     id: 4,
     name: '单选框',
@@ -82,17 +83,13 @@ class Container extends Component {
                 index: null,
                 show: 0   // 0：不显示，1：显示
             },
-            hoverIndex: null,
+            field: null,
             sourceList: kjList,   //可拖拽数组
             targetList: []   ////接收拖拽目标数组
         }
     }
 
-    getHoverIndex = (index) => {
-        // console.log('index--->',index);
-    }
-
-    insert = (index,item) => {
+    insert = (index, item) => {
         item.id = uuid.v4();
         let { targetList } = this.state;
         let newData = targetList;
@@ -103,7 +100,7 @@ class Container extends Component {
     }
 
     moveCard = (dragIndex, hoverIndex) => {//排序过程中，先执行moveCard,再执行insert
-        
+
         let { targetList } = this.state;
         let newData = targetList;
         console.log('删除-----');
@@ -129,24 +126,18 @@ class Container extends Component {
     //     let newData = targetList;
     //     if (num === 0) {
     //         console.log('增加----');
-            
+
     //         newData.splice(index, num, data)
 
     //     } else {
     //         console.log('删除-----');
-            
+
     //         newData.splice(index, num)
     //     }
     //     this.setState({ targetList: newData })
     // }
 
     getMarkFlag = (index, show) => {
-
-        // console.log('index--->',index);
-        // console.log('show---->',show);
-        
-        
-        
         this.setState({
             markFlag: {
                 index: index,
@@ -155,7 +146,25 @@ class Container extends Component {
         })
     }
 
+    handleClickJK = (field) => {
+        this.setState({
+            field: field
+        })
+    }
+
     render() {
+
+        let Field;
+        if(this.state.field === null){
+            Field = () => {
+                return <div></div>
+            }
+        }else{
+            Field = FieldModal[this.state.field]
+        }
+
+        
+        
         return (
             <div className="app-design-container">
                 <h3 className="app-title">模板</h3>
@@ -176,19 +185,18 @@ class Container extends Component {
                         <div className="app-target-wrapper">
                             <img className="app-iphone" src={iphone} alt="iphone-bg" />
                             <Target targetList={this.state.targetList} markFlag={this.state.markFlag}
-                            getHoverIndex={this.getHoverIndex}
-                            getMarkFlag={this.getMarkFlag}
-                            insert={this.insert} 
-                            moveCard={this.moveCard} 
-                            deleteCard={this.deleteCard} />
+                                getMarkFlag={this.getMarkFlag}
+                                handleClickJK = {this.handleClickJK}
+                                insert={this.insert}
+                                moveCard={this.moveCard}
+                                deleteCard={this.deleteCard} />
                         </div>
                     </Col>
                     <Col span={8}>
                         <Tabs defaultActiveKey="1" className="app-tabs-data">
                             <TabPane tab="控件设置" key="1">
-                                data1
-                        </TabPane>
-                            <TabPane tab="表单设置" key="2">data2</TabPane>
+                                <Field />
+                            </TabPane>
                         </Tabs>
                     </Col>
                 </Row>

@@ -55,7 +55,7 @@
     left: 29px;
     color: #000;
     overflow-x: hidden;
-    overflow-y: scroll
+    overflow-y: auto
 }
 .app-iphone{
     display: block;
@@ -93,6 +93,7 @@
 .app-element-body.empty{
     background: url(//gw.alicdn.com/tfs/TB1QAn2eNrI8KJjy0FpXXb5hVXa-249-120.png) no-repeat center;
     position: relative;
+    margin-top: 11px;
     min-height: 300px;
 }
 .app-element-body.empty .text{
@@ -230,6 +231,11 @@
     margin: 3px 0;
 }
 
+/* .app-dragging-mark:first-child{
+    position: absolute;
+    width: 100%;
+} */
+
 .app-dragging-mark:before,.app-dragging-mark:after {
     position: absolute;
     content: '';
@@ -251,15 +257,3 @@
     right: 0;
     border-right-color: #ff4500
 }
-/* .app-element-wrap.mark{
-    padding-bottom: 15px;
-}
-.app-element-wrap.mark .app-drag{
-    bottom: 15px;
-}
-.app-element-wrap.mark .app-dragging-mark{
-    display: block;
-    top: auto;
-    bottom: -4px;
-    z-index: 1;
-} */

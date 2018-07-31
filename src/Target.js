@@ -37,10 +37,12 @@ const cardTarget = {
         }
     },
     drop(props, monitor) {
-        const item = monitor.getItem()
-
+        let item = monitor.getItem()
+        let _field = item.field
         let clientY = mouseEvent();
         let _length = props.targetList.length;
+
+        props.handleClickJK(_field);
 
         props.getMarkFlag(_length, 0);
 
@@ -79,11 +81,15 @@ class Target extends Component {
     }
 
     handleClick = (event) => {
+        
+        let _field = event.target.getAttribute('field');
+        this.props.handleClickJK(_field);
+        
         this.setState({ clickClass: parseInt(event.target.getAttribute('index'), 10) })
     }
 
     render() {
-        const { canDrop, isOver, insert, getHoverIndex, markFlag, deleteCard, moveCard, targetList, connectDropTarget } = this.props;
+        const { canDrop, isOver, insert, getMarkFlag, markFlag, deleteCard, moveCard, targetList, connectDropTarget } = this.props;
         // const isActive = canDrop && isOver;
         let list = this.props.targetList;
         let elementBodyClass = '';
@@ -118,7 +124,7 @@ class Target extends Component {
                 key={item.id}
                 field={item.field}
                 type={item.type}
-                getHoverIndex={getHoverIndex}
+                getMarkFlag={getMarkFlag}
                 onClick={this.handleClick} insert={insert} clickClass={this.state.clickClass} deleteCard={deleteCard} moveCard={moveCard} />
              )
              items.push(

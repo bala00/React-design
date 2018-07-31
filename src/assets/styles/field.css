@@ -1,0 +1,79 @@
+.app-field{
+    display: block;
+    margin: 5px 0 30px;
+    font-size: 12px;
+}
+
+.app-fieldname{
+    display: block;
+    margin-bottom: 12px;
+    padding-left: 2px;
+    font-weight: bold;
+}
+
+.app-fieldinfo{
+    margin-left: 8px;
+    color: #f4f4f4;
+    font-weight: normal;
+    opacity: .9;
+}
+.app-fieldblock{
+    width: 350px;
+    display: block;
+    margin: 5px 0;
+    color: #fff;
+    font-size: 13px;
+    line-height: normal;
+}
+.app-fieldtips{
+    font-size: 12px;
+    margin-top: 6px;
+}
+.app-field input, .app-field textarea {
+    color: #fff;
+    font-size: 12px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, .1);
+}
+.app-fieldblock .ant-checkbox-inner{
+    width: 12px;
+    height: 12px;
+    border-width: 0;
+}
+.app-setting-options .app-fieldblock input{
+    width: 150px;
+}
+.app-action{
+    display: inline-block;
+    margin-left: 5px;
+    padding: 1px 1px 3px 2px;
+    width: 18px;
+    height: 18px;
+    color: #fff;
+    opacity: .6;
+    background:#000;
+    border-radius: 50%;
+    text-align: center;
+}
+.app-action i{
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+}
+.app-action:hover{
+    color: #fff;
+    opacity: 1;
+}
+.app-line{
+    margin-top: 10px;
+}
+.app-line a{
+    cursor: default;
+    color: #2db7f5;
+}
+.app-line a:hover{
+    color: #2db7f5;
+}
+.app-tabs-data .ant-tabs-bar{
+    margin-bottom: 30px;
+}

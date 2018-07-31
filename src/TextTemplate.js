@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { Icon } from 'antd'
 
+/** 
+ * 
+ * 无用组件 设计器中未使用
+ * 
+**/
+
 function CommonTm(props) {
     return (
         <div>

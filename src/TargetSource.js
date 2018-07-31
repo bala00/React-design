@@ -23,37 +23,35 @@ const cardSource = {
       element: props.element
     }
   },
-  // endDrag(props, monitor, component){
-    // let dropResult = monitor.getDropResult();
-    // let hoverIndex = dropResult.hoverIndex;
-    // let dragIndex = dropResult.dragIndex;
+  endDrag(props, monitor, component){
+    let dropResult = monitor.getDropResult();
+    let hoverIndex = dropResult.hoverIndex;
+    let dragIndex = dropResult.dragIndex;
+    
+    console.log('drag end--->',dragIndex);
+    console.log('hover end-->',hoverIndex);
+    
 
-    // console.log('drag 000--->',dragIndex);
-    // console.log('hover 000-->',hoverIndex);
-
-    // if(dragIndex && hoverIndex){
-
-    //   // console.log('moveCard start-------');
-
-    //   props.moveCard(dragIndex, hoverIndex)
-    // }
-  // },
+    if(dragIndex && hoverIndex){
+      props.moveCard(dragIndex, hoverIndex)
+    }
+  },
 }
 
 const cardDropSpec = {
   hover(props, monitor, component) {
-    // let item = monitor.getItem()
-    // let dragIndex = item.index
+    let item = monitor.getItem()
+    let dragIndex = item.index
     let hoverIndex = props.index
-    const item = monitor.getItem()
-		const dragIndex = item.index
-    
 
-    if (dragIndex === hoverIndex) {
-			return
-		}
+    console.log('drag 000-->',dragIndex);
+    console.log('hover 000-->',hoverIndex);
     
-    //  // Determine rectangle on screen
+    // if (dragIndex === hoverIndex) {
+		// 	return
+		// }
+  
+    // // Determine rectangle on screen
 		// const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
 
 		// // Get vertical middle
@@ -63,17 +61,9 @@ const cardDropSpec = {
 		// const clientOffset = monitor.getClientOffset()
 
 		// // Get pixels to the top
-    // const hoverClientY = clientOffset.y - hoverBoundingRect.top
-    
-    // console.log('hoverClientY--->',hoverClientY);
-    // console.log('hoverMiddleY-->',hoverMiddleY);
-    
-    props.getHoverIndex(hoverIndex)
-    
-    item.index = hoverIndex
+		// const hoverClientY = clientOffset.y - hoverBoundingRect.top
 
-
-		// Dragging downwards
+		// // Dragging downwards
 		// if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
 		// 	return
 		// }
@@ -82,34 +72,59 @@ const cardDropSpec = {
 		// if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
 		// 	return
     // }
-    // props.getMarkFlag(hoverIndex, 1);
+    props.getMarkFlag(hoverIndex, 1)
+    // props.getHoverIndex(hoverIndex)
+    
+    
 
   },
-  // drop(props, monitor) {
-  //   let item = monitor.getItem()
-  //   let dragIndex = item.index
-  //   let hoverIndex = props.index
+  drop(props, monitor, component) {
+    let item = monitor.getItem()
+    let dragIndex = item.index
+    let hoverIndex = props.index
 
-  //   console.log('drag 111--->',dragIndex);
-  //   console.log('hover 111-->',hoverIndex);
-
-  //   if (dragIndex === hoverIndex) {
-	// 		return
-  //   }
-
-  //   // let hover = hoverIndex + 1
-
-  //   // if(dragIndex === hover){
-  //   //   return
-  //   // }
+    console.log('drag 111--->',dragIndex);
+    console.log('hover 111-->',hoverIndex);
     
-  //   props.insert(hoverIndex, item)
+    if(dragIndex === hoverIndex){
+      return
+    }
+     // Determine rectangle on screen
+		const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
 
-  //   return {
-  //     dragIndex: dragIndex,
-  //     hoverIndex: hoverIndex
-  //   }
-  // }
+		// Get vertical middle
+		const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+
+		// Determine mouse position
+		const clientOffset = monitor.getClientOffset()
+
+		// Get pixels to the top
+    const hoverClientY = clientOffset.y - hoverBoundingRect.top
+    console.log('hoverClientY-->',hoverClientY);
+    console.log('hoverMiddleY--->',hoverMiddleY);
+    
+
+    // Dragging downwards
+		// if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+		// 	return
+		// }
+
+		// // Dragging upwards
+		// if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+		// 	return
+		// }
+    
+    props.insert(hoverIndex, item)
+
+    item.index = hoverIndex
+
+    return {
+      dragIndex: dragIndex,
+      hoverIndex: hoverIndex,
+      hoverClientY: hoverClientY,
+      hoverMiddleY: hoverMiddleY
+    }
+  }
 }
 
 
@@ -131,6 +146,11 @@ let collectDrop = (connect, monitor) => {
 
 const contentTM = {
   input: {
+    placeholderText: '请输入',
+    iType: "",
+    iClassName: ""
+  },
+  numInput: {
     placeholderText: '请输入',
     iType: "",
     iClassName: ""
@@ -161,12 +181,12 @@ function CommonTm(props) {
 class TargetSource extends Component {
 
   render() {
-    const { baseClass, onClick, deleteCard, clickClass, element, type, name, index, isDragging, connectDragSource, connectDropTarget } = this.props;
+    const { baseClass, onClick, deleteCard, clickClass, element, type, field, name, index, isDragging, connectDragSource, connectDropTarget } = this.props;
     const dragClass = isDragging ? 'dragging' : '';
 
     return connectDropTarget(
       connectDragSource(
-        <div className={`${baseClass} app-element-${element} ${dragClass} ${clickClass === index ? 'active' : ''}` } index={index} onClick={onClick}>
+        <div className={`${baseClass} app-element-${element} ${dragClass} ${clickClass === index ? 'active' : ''}` } index={index} field={field} onClick={onClick}>
           <div className="app-remove" index={index} onClick={deleteCard}><Icon type="close" /></div>
           <div className='app-drag'></div>
           <div className="app-componentview">
