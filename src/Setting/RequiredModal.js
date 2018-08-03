@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import { Checkbox } from 'antd';
 
+/*
+* feature: 是否必填模板
+* author: hmw
+* time: 18.07.12
+*/
+
 class Required extends Component {
     render() {
         return (

@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
-import { DragSource, DropTarget } from 'react-dnd';
-// import { findDOMNode } from 'react-dom'
-// import ReactCSSTransitionGroup from 'react-transition-group';
+import { DragSource } from 'react-dnd';
 import PropTypes from 'prop-types';
 import ItemTypes from './ItemTypes'
 import './assets/font/iconfont.css'
 
 
 /*
-* feature: 可被拖拽的组件
+* feature: 可拖拽的组件
 * author: hmw
 * time: 18.07.12
 */
@@ -17,10 +15,12 @@ const cardSource = {
   beginDrag(props) {
     return {
       name: props.name,
-      type: props.type,
       index: props.index,
       field: props.field,
-      element: props.element
+      element: props.element,
+      placeholderText: props.placeholderText,
+      iType: props.iType,
+      iClassName: props.iClassName
     }
   },
 }
@@ -33,7 +33,6 @@ let collect = (connect, monitor) => {
 }
 
 class Source extends Component {
-
   render() {
     const { name, icon, isDragging, connectDragSource } = this.props;
     const opacity = isDragging ? 0.4 : 1;

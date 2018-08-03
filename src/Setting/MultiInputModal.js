@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import { Input } from 'antd';
 
+/*
+* feature: 多行输入框模板
+* author: hmw
+* time: 18.07.12
+*/
+
 const { TextArea } = Input;
 
 class MultiInputModal extends Component {
@@ -11,7 +17,7 @@ class MultiInputModal extends Component {
                     说明文字<span className="app-fieldinfo">最多{this.props.num}字</span>
                 </div>
                 <div className="app-fieldblock">
-                    <TextArea rows={4} value={this.props.value} />
+                    <TextArea rows={4} value={this.props.value} onChange={this.props.handleChange} />
                 </div>
             </div>
         )
