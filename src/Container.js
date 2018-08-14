@@ -38,7 +38,7 @@ class Container extends Component {
         item.id = uuid.v4();
         let { targetList } = this.state;
         let newData = targetList;
-        newData.splice(index, 0, item);
+        newData.splice(index, 0, item);        
         this.setState({
             targetList: newData,
             cardIndex: index
@@ -50,7 +50,7 @@ class Container extends Component {
         let { targetList } = this.state;
         let newData = targetList.slice();
         newData.splice(dragIndex, 1);
-        this.setState({ targetList: newData })
+        this.setState({ targetList: newData })        
     }
 
     //拖拽删除

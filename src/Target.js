@@ -37,7 +37,7 @@ const cardTarget = {
         let clientY = mouseEvent();
         let _length = props.targetList.length;
         props.getMarkFlag(_length, 0);
-        if (_length === 0) {
+        if (_length === 0) {            
             props.insert(0, item)
         } else {
             if (clientY.mouseY >= clientY.targetBodyY) {
@@ -103,6 +103,7 @@ class Target extends Component {
         let items = []
 
         targetList.map((item, index) => {
+            
             items.push(
                 <TargetSource baseClass={baseClass}
                     element={item.element}

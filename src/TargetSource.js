@@ -12,22 +12,29 @@ import './assets/font/iconfont.css'
 * time: 18.07.12
 */
 
+// 鼠标位置
+function mouseEvent(event) {
+  let e = event || window.event;
+  let mouseY = e.clientY   //鼠标距离视窗的垂直距离
+  return mouseY
+}
+
 const cardSource = {
   beginDrag(props) {
     return {
       name: props.name,
-      id: props.id,
       index: props.index,
       field: props.field,
-      element: props.element
+      element: props.element,
+      placeholderText: props.placeholderText,
+      iType: props.iType,
+      iClassName: props.iClassName
     }
   },
-  endDrag(props, monitor) {
-
+  endDrag(props, monitor, component) {
     if(!monitor.didDrop()){ //拖出
       return
     }
-    
     let dgIndex = monitor.getItem().index;
     let dropResult = monitor.getDropResult();
     let hoverIndex = dropResult.hoverIndex;
@@ -37,8 +44,15 @@ const cardSource = {
       if (hoverIndex < dragIndex) {
         dragIndex = dragIndex + 1;
       }
+      
       props.moveCard(dragIndex)
-    } else if (dgIndex >= 0) {
+    } else if (dgIndex >= 0 ) {
+
+      let mouseY = mouseEvent();
+      let hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+      if(dgIndex === props.index && mouseY >= hoverBoundingRect.top && mouseY <= hoverBoundingRect.bottom+20){
+        return 
+      }
       props.moveCard(dgIndex)
     }
   },
@@ -106,10 +120,9 @@ function CommonTm(props) {
 }
 
 class TargetSource extends Component {
-
   render() {
     const { baseClass, onClick, deleteCard, clickClass, element, name, placeholderText, iType, iClassName, index, isDragging, connectDragSource, connectDropTarget } = this.props;
-    const dragClass = isDragging ? 'dragging' : '';
+    const dragClass = isDragging ? 'dragging' : '';    
 
     return connectDropTarget(
       connectDragSource(
