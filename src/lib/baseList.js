@@ -1,4 +1,4 @@
-const kjList = [{   //可拖拽组件库
+const baseList = [{   //可拖拽组件库
     id: 1,
     name: '单行输入框',
     icon: 'icon-dingdingdanhangshurukuang',
@@ -70,4 +70,4 @@ const kjList = [{   //可拖拽组件库
     placeholderText: '请输入说明文字'
 }];
 
-export default kjList
+export default baseList

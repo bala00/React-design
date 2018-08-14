@@ -6,7 +6,7 @@ import Target from './Target'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import * as FieldModal from './FormSet/FormElement'
-import kjList from './lib/kjList'
+import baseList from './lib/baseList'
 import './assets/styles/design.css'
 import iphone from './assets/images/iphone.png'
 
@@ -28,7 +28,7 @@ class Container extends Component {
                 show: 0   // 0：不显示，1：显示
             },
             cardIndex: 0,  //当前模块ID
-            sourceList: kjList,   //可拖拽数组
+            sourceList: baseList,   //可拖拽数组
             targetList: []   //接收拖拽目标数组
         }
     }

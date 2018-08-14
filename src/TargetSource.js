@@ -10,6 +10,7 @@ import './assets/font/iconfont.css'
 * feature: 排序组件
 * author: hmw
 * time: 18.07.12
+* tips: 核心代码，请勿轻易修改
 */
 
 // 鼠标位置
